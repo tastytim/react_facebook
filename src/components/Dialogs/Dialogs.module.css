@@ -1,0 +1,28 @@
+.content{
+    grid-area: c;
+    background-color: rgb(218, 222, 228);
+}
+
+.row{
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    padding: 10px 10px;
+    
+}
+
+
+.message{
+
+}
+
+.messages{
+
+}
+
+.dialog{
+
+}
+
+.dialogs{
+
+}

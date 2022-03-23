@@ -1,8 +1,17 @@
 .nav{
     grid-area: n;
+    background-color: burlywood;
+    padding: 10px 10px;
 }
 
-.item{
-  
+.item a{
+    text-decoration: none;
+    color:black;
 }
+
+.active_link{
+    color: gold !important;
+}
+
+
 
