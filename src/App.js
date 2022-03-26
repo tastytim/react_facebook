@@ -29,6 +29,8 @@ const App = (props) => {
             element={
               <Dialogs
               state={props.state}
+              dispatch = {props.dispatch}
+              store={props.store}
               />
             }
           />
