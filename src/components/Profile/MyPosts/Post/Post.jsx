@@ -6,7 +6,7 @@ const Post = (props) => {
     <div className={s.item}>
       <img
         src="https://static.fanpage.it/wp-content/uploads/sites/17/2019/12/1540893430_avatar-1200x1200.jpg"
-        alt=""
+        alt="img"
       />
       <h3>Post {props.id}</h3>
       <div>Like {props.likesCount}</div>

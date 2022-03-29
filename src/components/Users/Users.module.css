@@ -1,0 +1,21 @@
+
+.users_container{
+    padding: 10px 10px;
+}
+.userPhoto{
+  width: 70px;
+  border-radius: 50%;
+}
+.selectedPage{
+  font-weight: bold;
+}
+
+.spinner_div{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+

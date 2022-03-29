@@ -1,25 +1,20 @@
 import React from "react";
-import { addPostActionCreator, updateNewPostTextActionCreator } from "../../../Redux/profile-reducer";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-
 const MyPosts = (props) => {
-  
-
   let newPostElement = React.createRef();
-  let posts = props.state.profilePage.posts;
 
-  let onChangeTextArea = () => {
-    let text = newPostElement.current.value;
-    props.dispatch(updateNewPostTextActionCreator(text));
+  let onPostchange = (e) => {
+    let text = e.target.value;
+    props.onChangeTextArea(text);
   };
 
-  let addPost = () => {
-    props.dispatch(addPostActionCreator());
+  let onAddPost = () => {
+    props.addPost();
   };
 
-  let postsElement = posts.map((e) => (
+  let postsElement = props.posts.map((e) => (
     <Post id={e.id} key={e.id} message={e.message} likesCount={e.likesCount} />
   ));
 
@@ -35,11 +30,11 @@ const MyPosts = (props) => {
             cols="30"
             rows="3"
             ref={newPostElement}
-            onChange={onChangeTextArea}
-            value={props.state.profilePage.newPostText}
+            onChange={onPostchange}
+            value={props.newPostText}
           ></textarea>
           <div className="py-2">
-            <button onClick={addPost} className="btn btn-primary me-2">
+            <button onClick={onAddPost} className="btn btn-primary me-2">
               Add post
             </button>
             <button className="btn btn-primary">Remove</button>
