@@ -1,42 +1,29 @@
 import { connect } from "react-redux";
 import {
-  followAc,
-  setCurrentPageAc,
-  setTotalUsersCountAc,
-  setUsersAc,
-  unfollowAc,
-  setIsFetchingAc,
+  follow,
+  setCurrentPage,
+  setTotalUsersCount,
+  setUsers,
+  unfollow,
+  setIsFetching,
+  setIsFollowingInProgress,
+  getUsersThunkCreator,
+  followThunkCreator,
+  unFollowThunkCreator
 } from "../../Redux/users-reducer";
-import axios from "axios";
 import Users from "./Users";
-import Preloader from "./../Common/Preloader";
+import Preloader from './../Common/Preloader';
 import { React, Component } from "react";
 
 class UsersApiComponent extends Component {
+  
   componentDidMount() {
-    this.props.setIsFetchingAc(true);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-      )
-      .then((resp) => {
-        this.props.setUsers(resp.data.items);
-        this.props.setTotalUsersCount(resp.data.totalCount);
-        this.props.setIsFetchingAc(false);
-      });
+    this.props.getUsers(this.props.currentPage, this.props.pageSize);   
   }
 
-  onPageChanged = (p) => {
-    this.props.setIsFetchingAc(true);
-    this.props.setCurrentPage(p);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${this.props.pageSize}`
-      )
-      .then((resp) => {
-        this.props.setUsers(resp.data.items);
-        this.props.setIsFetchingAc(false);
-      });
+  onPageChanged = (page) => {
+    this.props.setCurrentPage(page);
+    this.props.getUsers(page, this.props.pageSize); 
   };
 
   render() {
@@ -53,6 +40,8 @@ class UsersApiComponent extends Component {
             follow={this.props.follow}
             users={this.props.users}
             onPageChanged={this.onPageChanged}
+            isFollowingInProgress={this.props.isFollowingInProgress}
+            setIsFollowingInProgress={this.props.setIsFollowingInProgress}
           />
         )}
       </>
@@ -67,17 +56,22 @@ let mapStateProps = (state) => {
     totalCount: state.usersPage.totalCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    isFollowingInProgress : state.usersPage.isFollowingInProgress
   };
 };
 
-export default connect( mapDispatchProps , {
-    follow: followAc,
-    unfollow: unfollowAc,
-    setUsers: setUsersAc,
-    setCurrentPage: setCurrentPageAc,
-    setTotalUsersCount: setTotalUsersCountAc,
-    setIsFetchingAc: setIsFetchingAc })(UsersContainer);
+const UsersContainer = connect(
+  mapStateProps,
+  {
+  setCurrentPage,
+  setTotalUsersCount,
+  setUsers,
+  unfollow : unFollowThunkCreator,
+  setIsFetching,
+  setIsFollowingInProgress,
+  getUsers: getUsersThunkCreator,
+  follow : followThunkCreator
+}
+)(UsersApiComponent);
 
-
-
-
+export default UsersContainer;
