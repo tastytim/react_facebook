@@ -7,35 +7,36 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import Login from './components/Login/Login';
 
 const App = (props) => {
   return (
     <div className="app-wrapper">
-      <HeaderContainer {...props}/>
+      <HeaderContainer {...props} />
       <Navbar />
       <div>
         <Routes>
           <Route
-            path="/profile/:id"
-            element={
-              <ProfileContainer
-                store={props.store}
-              />
-            }
+            path="/profile/:userId"
+            element={<ProfileContainer store={props.store} />}
+          />
+          <Route
+            path="/profile/"
+            element={<ProfileContainer store={props.store} />}
           />
 
           <Route
             path="/dialogs"
-            element={
-              <DialogsContainer
-              store={props.store}
-              />
-            }
+            element={<DialogsContainer store={props.store} />}
           />
           <Route
             path="/users"
+            element={<UsersContainer store={props.store} />}
+          />
+          <Route
+            path="/login"
             element={
-              <UsersContainer
+              <Login
               store={props.store}
               />
             }

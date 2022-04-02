@@ -2,8 +2,6 @@ import React from "react";
 import s from "./Users.module.css";
 import userPhoto from "../../assets/user.png";
 import { NavLink } from "react-router-dom";
-import { followUser, unfollowUser } from "../api/api";
-import { follow } from "../../Redux/users-reducer";
 
 let Users = (props) => {
   let pagesCount = Math.ceil(props.totalCount / props.pageSize);
@@ -11,7 +9,6 @@ let Users = (props) => {
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);
   }
-
   return (
     <div>
       <div>
@@ -42,20 +39,21 @@ let Users = (props) => {
             <div>
               {u.followed ? (
                 <button
-                  disabled={props.isFollowingInProgress.some(id=>id===u.id)}
+                  disabled={props.isFollowingInProgress.some((id) => id === u.id)}
                   className="btn btn-primary my-2"
                   onClick={() => {
-                    props.unfollow(u.id)
+                    props.unfollow(u.id);
                   }}
                 >
                   Unfollow
                 </button>
-              ) : (
+              ) :
+               (
                 <button
-                disabled={props.isFollowingInProgress.some(id=>id===u.id)}
+                  disabled={props.isFollowingInProgress.some((id) => id === u.id)}
                   className="btn btn-primary my-2"
                   onClick={() => {
-                    props.follow(u.id)
+                    props.follow(u.id);
                   }}
                 >
                   Follow

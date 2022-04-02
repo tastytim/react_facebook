@@ -1,10 +1,8 @@
 import { connect } from "react-redux";
 import {
-  follow,
   setCurrentPage,
   setTotalUsersCount,
   setUsers,
-  unfollow,
   setIsFetching,
   setIsFollowingInProgress,
   getUsersThunkCreator,
@@ -14,6 +12,8 @@ import {
 import Users from "./Users";
 import Preloader from './../Common/Preloader';
 import { React, Component } from "react";
+import { withAuthRedirect } from "../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 class UsersApiComponent extends Component {
   
@@ -49,6 +49,7 @@ class UsersApiComponent extends Component {
   }
 }
 
+
 let mapStateProps = (state) => {
   return {
     users: state.usersPage.users,
@@ -56,22 +57,21 @@ let mapStateProps = (state) => {
     totalCount: state.usersPage.totalCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
-    isFollowingInProgress : state.usersPage.isFollowingInProgress
+    isFollowingInProgress : state.usersPage.isFollowingInProgress,
   };
 };
 
-const UsersContainer = connect(
-  mapStateProps,
-  {
-  setCurrentPage,
-  setTotalUsersCount,
-  setUsers,
-  unfollow : unFollowThunkCreator,
-  setIsFetching,
-  setIsFollowingInProgress,
-  getUsers: getUsersThunkCreator,
-  follow : followThunkCreator
-}
-)(UsersApiComponent);
 
-export default UsersContainer;
+
+export default compose(
+  connect(mapStateProps,
+    {setCurrentPage,
+      setTotalUsersCount,
+      setUsers,
+      unfollow : unFollowThunkCreator,
+      setIsFetching,
+      setIsFollowingInProgress,
+      getUsers: getUsersThunkCreator,
+      follow : followThunkCreator}),
+      withAuthRedirect
+)(UsersApiComponent);
