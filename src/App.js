@@ -7,7 +7,7 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from './components/Login/Login';
+import LoginContainer from "./components/Login/LoginContainer";
 
 const App = (props) => {
   return (
@@ -17,14 +17,13 @@ const App = (props) => {
       <div>
         <Routes>
           <Route
-            path="/profile/:userId"
+            path="/profile"
             element={<ProfileContainer store={props.store} />}
-          />
+          ></Route>
           <Route
-            path="/profile/"
+            path="/profile/*"
             element={<ProfileContainer store={props.store} />}
-          />
-
+          ></Route>
           <Route
             path="/dialogs"
             element={<DialogsContainer store={props.store} />}
@@ -33,14 +32,7 @@ const App = (props) => {
             path="/users"
             element={<UsersContainer store={props.store} />}
           />
-          <Route
-            path="/login"
-            element={
-              <Login
-              store={props.store}
-              />
-            }
-          />
+          <Route path="/login" element={<LoginContainer store={props.store} />} />
         </Routes>
       </div>
     </div>

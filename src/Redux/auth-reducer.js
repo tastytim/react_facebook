@@ -1,4 +1,4 @@
-import { loginUser } from "../components/api/api";
+import { AuthApi } from "../components/api/api";
 
 const SET_USER_DATA = "SET_USER_DATA";
 
@@ -29,11 +29,34 @@ export let setAuthMeUserData = (userId, email, login) => ({
 
 export const loginThunkCreator = () => {
   return (dispatch) => {
-    loginUser().then((resp) => {
+    AuthApi.loginUser().then((resp) => {
       if (resp.resultCode === 0) {
         let { id, email, login } = resp.data;
         dispatch(setAuthMeUserData(id, email, login));
       }
+    });
+  };
+};
+
+export const signInThunkCreator = (data) => {
+  return (dispatch) => {
+    AuthApi.signIn(data).then((resp) => {
+      if (resp.data.resultCode === 0) {
+        console.log("Signed in");
+      } else if (resp.data.resultCode === 10) {
+        AuthApi.getCaptcha().then((resp) => {
+          return resp;
+        });
+      } else if (resp.data.resultCode === 1) {
+        console.log("Request invalid");
+      }
+    });
+  };
+};
+export const logOutThunkCreator = () => {
+  return (dispatch) => {
+    AuthApi.logOut().then((resp) => {
+      return resp;
     });
   };
 };

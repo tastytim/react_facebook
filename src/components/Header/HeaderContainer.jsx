@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setAuthMeUserData , loginThunkCreator} from '../../Redux/auth-reducer';
+import { setAuthMeUserData , loginThunkCreator,logOutThunkCreator} from '../../Redux/auth-reducer';
 import Header from './Header';
 
 class HeaderContainer extends Component {
@@ -24,5 +24,6 @@ const mapStateToProps = (state)=>({
 
 export default connect(mapStateToProps,
    {setAuthMeUserData,
-     loginThunkCreator
+     loginThunkCreator,
+     logout : logOutThunkCreator
     }) (HeaderContainer);

@@ -1,4 +1,4 @@
-import { followUser, getUsers, unfollowUser } from "../components/api/api";
+import { UsersApi } from "../components/api/api";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -96,7 +96,7 @@ export const setIsFollowingInProgress = (isFollowInProgress, userId) => ({
 export const getUsersThunkCreator = (currentPage, pageSize) => {
   return (dispatch) => {
     dispatch(setIsFetching(true));
-    getUsers(currentPage, pageSize).then((resp) => {
+    UsersApi.getUsers(currentPage, pageSize).then((resp) => {
       dispatch(setUsers(resp.items));
       dispatch(setTotalUsersCount(resp.totalCount));
       dispatch(setIsFetching(false));
@@ -107,7 +107,7 @@ export const getUsersThunkCreator = (currentPage, pageSize) => {
 export const followThunkCreator = (userId) => {
   return (dispatch) => {
     dispatch(setIsFollowingInProgress(true, userId));
-    followUser(userId).then((resp) => {
+    UsersApi.followUser(userId).then((resp) => {
       if (resp === 0) {
         dispatch(follow(userId));
       }
@@ -118,7 +118,7 @@ export const followThunkCreator = (userId) => {
 export const unFollowThunkCreator = (userId) => {
   return (dispatch) => {
     dispatch(setIsFollowingInProgress(true, userId));
-    unfollowUser(userId).then((resp) => {
+    UsersApi.unfollowUser(userId).then((resp) => {
       if (resp === 0) {
         dispatch(unfollow(userId));
       }
