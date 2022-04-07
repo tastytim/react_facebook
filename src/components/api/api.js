@@ -54,22 +54,21 @@ export const ProfileApi = {
 };
 
 export const AuthApi = {
-  loginUser() {
+  me() {
     return instance.get("auth/me").then((resp) => {
       return resp.data;
     });
   },
 
-  signIn({ login, password, rememberMe}){
+  login({ login, password, rememberMe = false}){
     
     return instance.post("auth/login",{ email: login, password: password,rememberMe: rememberMe} ).then((resp)=>{
       return resp;
     });
   },
 
-  logOut(){
+  logout(){
     return instance.post("auth/logout").then((resp)=>{
-      console.log(resp)
       return resp;
     });
   },

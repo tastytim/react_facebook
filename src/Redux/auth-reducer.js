@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { AuthApi } from "../components/api/api";
 
 const SET_USER_DATA = "SET_USER_DATA";
@@ -15,48 +16,50 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.data,
-        isAuth: true,
+        isAuth: action.data.isAuth,
       };
     default:
       return state;
   }
 };
 
-export let setAuthMeUserData = (userId, email, login) => ({
+export const setAuthMeUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
-  data: { userId, email, login },
+  data: { userId, email, login , isAuth},
 });
 
-export const loginThunkCreator = () => {
+
+
+export const getUserDataThunk = () => {
   return (dispatch) => {
-    AuthApi.loginUser().then((resp) => {
+    AuthApi.me().then((resp) => {
       if (resp.resultCode === 0) {
         let { id, email, login } = resp.data;
-        dispatch(setAuthMeUserData(id, email, login));
+        dispatch(setAuthMeUserData(id, email, login, true));
       }
     });
   };
 };
 
-export const signInThunkCreator = (data) => {
+export const loginThunk = (data) => {
   return (dispatch) => {
-    AuthApi.signIn(data).then((resp) => {
+    AuthApi.login(data).then((resp) => {
       if (resp.data.resultCode === 0) {
-        console.log("Signed in");
-      } else if (resp.data.resultCode === 10) {
-        AuthApi.getCaptcha().then((resp) => {
-          return resp;
-        });
-      } else if (resp.data.resultCode === 1) {
-        console.log("Request invalid");
+        dispatch(getUserDataThunk());
+      } else {
+        let message = resp.data.messages.length > 0 ? resp.data.messages[0] : 'Error' ;
+         dispatch(stopSubmit("login", {_error : message}));
       }
     });
   };
 };
-export const logOutThunkCreator = () => {
+export const logoutThunk = () => {
   return (dispatch) => {
-    AuthApi.logOut().then((resp) => {
-      return resp;
+    AuthApi.logout().then((resp) => {
+      if(resp.data.resultCode === 0){
+        dispatch(setAuthMeUserData(null, null, null, false));
+        dispatch(getUserDataThunk());
+      }
     });
   };
 };

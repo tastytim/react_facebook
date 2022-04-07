@@ -3,7 +3,7 @@ import { ProfileApi } from "../components/api/api";
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS"
+const SET_STATUS = "SET_STATUS";
 
 let initialState = {
   posts: [
@@ -12,10 +12,9 @@ let initialState = {
     { id: 3, message: "How are you", likesCount: 15 },
     { id: 4, message: "tim", likesCount: 77 },
   ],
-  newPostText: "",
   id: 4,
   profile: null,
-  status: '',
+  status: "",
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -24,20 +23,14 @@ const profileReducer = (state = initialState, action) => {
       state.id++;
       let newPost = {
         id: state.id,
-        message: state.newPostText,
+        message: action.data.postMessage,
         likesCount: 5,
       };
       return {
         ...state,
         posts: [...state.posts, newPost],
-        newPostText: "",
       };
 
-    case UPDATE_NEW_POST_TEXT:
-      return {
-        ...state,
-        newPostText: action.newText,
-      };
     case SET_USER_PROFILE:
       return {
         ...state,
@@ -48,39 +41,44 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         status: action.status,
       };
-
-
     default:
       return state;
   }
 };
-export let addPostActionCreator = () => ({ type: ADD_POST });
-export let updateNewPostTextActionCreator = (text) => ({type: UPDATE_NEW_POST_TEXT,newText: text,});
+export let addPostActionCreator = (data) => ({ type: ADD_POST, data });
+export let updateNewPostTextActionCreator = (text) => ({
+  type: UPDATE_NEW_POST_TEXT,
+  newText: text,
+});
 export let setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
-export let setProfileStatus = (status)=>({type:SET_STATUS, status});
-
+export let setProfileStatus = (status) => ({ type: SET_STATUS, status });
 
 export const getProfileThunkCreator = (path) => {
   return (dispatch) => {
-    ProfileApi.getProfile(path).then(resp => {
+    ProfileApi.getProfile(path).then((resp) => {
       dispatch(setUserProfile(resp));
     });
   };
 };
 export const getProfileStatusThunkCreator = (userId) => {
   return (dispatch) => {
-    ProfileApi.getStatus(userId).then(resp => {
+    ProfileApi.getStatus(userId).then((resp) => {
       dispatch(setProfileStatus(resp));
     });
   };
 };
 export const updateProfileStatusThunkCreator = (status) => {
   return (dispatch) => {
-    ProfileApi.updateStatus(status).then(resp => {
-      if(resp.resultCode===0){
-         dispatch(setProfileStatus(status));
+    ProfileApi.updateStatus(status).then((resp) => {
+      if (resp.resultCode === 0) {
+        dispatch(setProfileStatus(status));
       }
     });
+  };
+};
+export const addPostThunkCretator = (data) => {
+  return (dispatch) => {
+    dispatch(addPostActionCreator(data));
   };
 };
 

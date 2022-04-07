@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {signInThunkCreator} from './../../Redux/auth-reducer'
+import {loginThunk} from './../../Redux/auth-reducer'
 import Login from './Login';
 
 class LoginContainer extends Component {
@@ -15,11 +15,11 @@ class LoginContainer extends Component {
 
 let mapStateToProps = (state)=> {
     return {
-         state : state,
+         state : state.auth,
     }
 }
 
 export default connect(
     mapStateToProps,
-    {signIn: signInThunkCreator}
+    {login: loginThunk}
 )(LoginContainer);

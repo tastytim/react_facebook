@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import { Route, Routes } from "react-router-dom";
@@ -8,35 +8,52 @@ import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/LoginContainer";
+import {  getUserDataThunk } from './Redux/auth-reducer';
+import { connect } from "react-redux";
+import { withRouter } from "./Redux/withrouter";
+import { compose } from "redux";
 
-const App = (props) => {
-  return (
-    <div className="app-wrapper">
-      <HeaderContainer {...props} />
-      <Navbar />
-      <div>
-        <Routes>
-          <Route
-            path="/profile"
-            element={<ProfileContainer store={props.store} />}
-          ></Route>
-          <Route
-            path="/profile/*"
-            element={<ProfileContainer store={props.store} />}
-          ></Route>
-          <Route
-            path="/dialogs"
-            element={<DialogsContainer store={props.store} />}
-          />
-          <Route
-            path="/users"
-            element={<UsersContainer store={props.store} />}
-          />
-          <Route path="/login" element={<LoginContainer store={props.store} />} />
-        </Routes>
+class App extends Component {
+
+  componentDidMount(){
+    this.props.getUserDataThunk();
+  }
+
+  render() {
+    return (
+      <div className="app-wrapper">
+        <HeaderContainer {...this.props} />
+        <Navbar />
+        <div>
+          <Routes>
+            <Route
+              path="/profile"
+              element={<ProfileContainer store={this.props.store} />}
+            ></Route>
+            <Route
+              path="/profile/*"
+              element={<ProfileContainer store={this.props.store} />}
+            ></Route>
+            <Route
+              path="/dialogs"
+              element={<DialogsContainer store={this.props.store} />}
+            />
+            <Route
+              path="/users"
+              element={<UsersContainer store={this.props.store} />}
+            />
+            <Route
+              path="/login"
+              element={<LoginContainer store={this.props.store} />}
+            />
+          </Routes>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default App;
+export default compose(
+  withRouter,
+   connect(null, {getUserDataThunk}))
+   (App);
