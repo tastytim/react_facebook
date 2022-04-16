@@ -1,6 +1,6 @@
 import React from "react";
 import Preloader from "../../Common/Preloader";
-import ProfileStatus from "./ProfileStatus";
+import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 
 
 
@@ -13,7 +13,7 @@ const ProfileInfo = (props) => {
       
       <p>{props.profile.fullName}</p>
       <p>{props.profile.userId}</p>
-      <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+      <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
     </div>
   );
 };

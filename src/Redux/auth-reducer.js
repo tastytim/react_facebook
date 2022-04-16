@@ -25,20 +25,16 @@ export const authReducer = (state = initialState, action) => {
 
 export const setAuthMeUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
-  data: { userId, email, login , isAuth},
+  data: { userId, email, login, isAuth },
 });
 
-
-
-export const getUserDataThunk = () => {
-  return (dispatch) => {
-    AuthApi.me().then((resp) => {
-      if (resp.resultCode === 0) {
-        let { id, email, login } = resp.data;
-        dispatch(setAuthMeUserData(id, email, login, true));
-      }
-    });
-  };
+export const getUserDataThunk = () => (dispatch) => {
+  return AuthApi.me().then((resp) => {
+    if (resp.resultCode === 0) {
+      let { id, email, login } = resp.data;
+      dispatch(setAuthMeUserData(id, email, login, true));
+    }
+  });
 };
 
 export const loginThunk = (data) => {
@@ -47,8 +43,9 @@ export const loginThunk = (data) => {
       if (resp.data.resultCode === 0) {
         dispatch(getUserDataThunk());
       } else {
-        let message = resp.data.messages.length > 0 ? resp.data.messages[0] : 'Error' ;
-         dispatch(stopSubmit("login", {_error : message}));
+        let message =
+          resp.data.messages.length > 0 ? resp.data.messages[0] : "Error";
+        dispatch(stopSubmit("login", { _error: message }));
       }
     });
   };
@@ -56,7 +53,7 @@ export const loginThunk = (data) => {
 export const logoutThunk = () => {
   return (dispatch) => {
     AuthApi.logout().then((resp) => {
-      if(resp.data.resultCode === 0){
+      if (resp.data.resultCode === 0) {
         dispatch(setAuthMeUserData(null, null, null, false));
         dispatch(getUserDataThunk());
       }

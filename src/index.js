@@ -9,21 +9,25 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 let rerenderEntireTree = (store) => {
- 
   ReactDOM.render(
     <React.StrictMode>
+      {/* Browser router  */}
       <BrowserRouter>
-      <Provider store={store} >
-        <App  />
-      </Provider>
+        {/* Provider store to all components */}
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     </React.StrictMode>,
     document.getElementById("root")
   );
 };
 
+// rerender store redux
 rerenderEntireTree(store);
-store.subscribe(()=>{
+// Observ pattern // subscribe function that oversee if components changed
+// if yes rerenders component
+store.subscribe(() => {
   rerenderEntireTree(store);
 });
 

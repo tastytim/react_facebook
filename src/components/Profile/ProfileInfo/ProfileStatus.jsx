@@ -1,16 +1,24 @@
 import React, { Component } from "react";
 
 class ProfileStatus extends Component {
+
+
+  // STATE
   state = {
     editmode: false,
     status: this.props.status,
   };
 
+
+  // ACRTIVATE  EDITMODE INPUT
   activateEditMode = () => {
     this.setState({
       editmode: true,
     });
   };
+
+
+  // DEACTIVE EDIT MODE
   deactivateEditMode = () => {
     this.setState({
       editmode: false,
@@ -18,12 +26,17 @@ class ProfileStatus extends Component {
     this.props.updateStatus(this.state.status);
   };
 
+
+
+  // ON CAHANGE SET NEW STATE STATUS
   onChangeStatus = (e) => {
     this.setState({
       status: e.currentTarget.value,
     });
   };
 
+
+  // ON UPDATE UPDATE COMPONENT
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.status !== this.props.status) {
       this.setState({
@@ -31,9 +44,14 @@ class ProfileStatus extends Component {
       });
     }
   }
+
+
+  // RENDER COMPONENT
   render() {
     return (
       <div>
+
+        {/* IF NOT EDIT MODE RETURN SPAN WITH STATUS */}
         {!this.state.editmode && (
           <div>
             <span onDoubleClick={this.activateEditMode}>
@@ -41,6 +59,7 @@ class ProfileStatus extends Component {
             </span>
           </div>
         )}
+        {/* OTHERWISE RETUN INPUT */}
         {this.state.editmode && (
           <div>
             <input

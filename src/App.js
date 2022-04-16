@@ -8,18 +8,25 @@ import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/LoginContainer";
-import {  getUserDataThunk } from './Redux/auth-reducer';
+import { initializeAppThunk } from "./Redux/app-reducer";
 import { connect } from "react-redux";
 import { withRouter } from "./Redux/withrouter";
 import { compose } from "redux";
+import Preloader from "./components/Common/Preloader";
 
 class App extends Component {
-
-  componentDidMount(){
-    this.props.getUserDataThunk();
+  // Download user data
+  componentDidMount() {
+    this.props.initializeAppThunk();
   }
 
   render() {
+    //  if didn t download
+    if (!this.props.initialized) {
+      return <Preloader></Preloader>;
+    }
+
+    // downloaded data user
     return (
       <div className="app-wrapper">
         <HeaderContainer {...this.props} />
@@ -53,7 +60,15 @@ class App extends Component {
   }
 }
 
+const mapStatetoProps = (state) => ({
+  initialized: state.app.initialized,
+});
+
+
+// compose wraps components in order
 export default compose(
+  // Component wraps child and return component with router location props
   withRouter,
-   connect(null, {getUserDataThunk}))
-   (App);
+  // connect function connect to component props from state redux store , and second parametr pass thunk
+  connect(mapStatetoProps, { initializeAppThunk })
+)(App);

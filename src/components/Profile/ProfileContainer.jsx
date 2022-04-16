@@ -12,6 +12,9 @@ class ProfileContainer extends Component {
     let userId = path[2];
     if (!userId) {
       userId = this.props.authorizedUserId;
+      if(!userId){
+        this.props.history.push('/login');
+      }
     }
     this.props.getProfile(userId);
     this.props.getStatus(userId);
